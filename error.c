@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: evieito- <evieito-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/23 15:39:43 by evieito-          #+#    #+#             */
+/*   Updated: 2025/11/23 16:33:39 by evieito-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -30,10 +42,13 @@ int	is_number(const char *s)
 
 long	ft_atol_error(const char *s)
 {
-	long	sign = 1;
-	long	res = 0;
-	int		i = 0;
+	long	sign;
+	long	res;
+	int		i;
 
+	sign = 1;
+	res = 0;
+	i = 0;
 	if (s[i] == '+' || s[i] == '-')
 	{
 		if (s[i] == '-')
@@ -45,7 +60,7 @@ long	ft_atol_error(const char *s)
 		res = res * 10 + (s[i] - '0');
 		if (sign == 1 && res > INT_MAX)
 			print_error();
-		if (sign == -1 && -res < INT_MIN)
+		if (sign == -1 && (-res) < INT_MIN)
 			print_error();
 		i++;
 	}
@@ -54,17 +69,24 @@ long	ft_atol_error(const char *s)
 
 int	has_duplicates(char **tokens)
 {
-	int	i, j;
+	int		i;
+	int		j;
+	long	a;
+	long	b;
 
-	for (i = 0; tokens[i]; i++)
+	i = 0;
+	while (tokens[i])
 	{
-		for (j = i + 1; tokens[j]; j++)
+		j = i + 1;
+		while (tokens[j])
 		{
-			long a = ft_atol_error(tokens[i]);
-			long b = ft_atol_error(tokens[j]);
+			a = ft_atol_error(tokens[i]);
+			b = ft_atol_error(tokens[j]);
 			if (a == b)
 				return (1);
+			j++;
 		}
+		i++;
 	}
 	return (0);
 }

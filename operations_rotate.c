@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   operations_rotate.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: evieito- <evieito-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/23 15:42:15 by evieito-          #+#    #+#             */
+/*   Updated: 2025/11/23 17:21:35 by evieito-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 #include <unistd.h>
 
@@ -18,7 +30,6 @@ void	ra(t_node **a)
 	last = *a;
 	while (last->next)
 		last = last->next;
-
 	*a = first->next;
 	first->next = NULL;
 	last->next = first;
@@ -36,7 +47,6 @@ void	rb(t_node **b)
 	last = *b;
 	while (last->next)
 		last = last->next;
-
 	*b = first->next;
 	first->next = NULL;
 	last->next = first;

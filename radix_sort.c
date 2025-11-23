@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   radix_sort.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: evieito- <evieito-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/23 15:43:37 by evieito-          #+#    #+#             */
+/*   Updated: 2025/11/23 18:36:42 by evieito-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-static void	assign_indices(t_node *a)
+void	assign_indices(t_node *a)
 {
 	t_node	*i;
 	t_node	*j;
@@ -22,31 +34,48 @@ static void	assign_indices(t_node *a)
 	}
 }
 
+void	radix_pass(t_node **a, t_node **b, int bit, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (((*a)->index >> bit) & 1)
+			ra(a);
+		else
+			pb(a, b);
+		i++;
+	}
+	while (*b)
+		pa(a, b);
+}
+
 void	radix_sort(t_node **a, t_node **b)
 {
-	int	size = stack_size(*a);
-	int	max = 0;
-	int	max_bits = 0;
+	int		size;
+	int		max;
+	int		max_bits;
+	int		bit;
+	t_node	*tmp;
 
+	size = stack_size(*a);
+	max = 0;
+	max_bits = 0;
+	tmp = *a;
 	assign_indices(*a);
-
-	for (t_node *tmp = *a; tmp; tmp = tmp->next)
+	while (tmp)
+	{
 		if (tmp->index > max)
 			max = tmp->index;
-
+		tmp = tmp->next;
+	}
 	while ((max >> max_bits) != 0)
 		max_bits++;
-
-	for (int bit = 0; bit < max_bits; bit++)
+	bit = 0;
+	while (bit < max_bits)
 	{
-		for (int i = 0; i < size; i++)
-		{
-			if (((*a)->index >> bit) & 1)
-				ra(a);
-			else
-				pb(a, b);
-		}
-		while (*b)
-			pa(a, b);
+		radix_pass(a, b, bit, size);
+		bit++;
 	}
 }
