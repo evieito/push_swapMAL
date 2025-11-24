@@ -44,6 +44,18 @@ void				small_sort(t_node **a, t_node **b);
 void				radix_sort(t_node **a, t_node **b);
 void				assign_indices(t_node *a);
 void				chunk_sort(t_node **a, t_node **b);
+int					size_to_chunks(int size);
+int					find_pos_in_a(t_node *a, int index);
+int					find_pos_in_b(t_node *b, int index);
+int					compute_best_in_chunk(t_node *a, t_node *b, int limit,
+							int *best_pos_in_a, int *best_target_in_b);
+void				perform_rotations_and_push(t_node **a, t_node **b,
+							int pos_a, int pos_b);
+int					choose_best_reinsert(t_node *a, t_node *b,
+							int *best_idx_in_b, int *best_target_in_a);
+void				execute_reinsert(t_node **a, t_node **b,
+							int best_idx_in_b, int best_target_in_a);
+void				final_rotate_a(t_node **a);
 int					is_sorted(t_node *a);
 void				print_error(void);
 int					is_number(const char *s);

@@ -55,7 +55,28 @@ void	rb(t_node **b)
 
 void	rr(t_node **a, t_node **b)
 {
-	ra(a);
-	rb(b);
+	/* perform rotations for both stacks without calling ra/rb which would
+	 * emit their own operation lines. Do the moves inline and write a
+	 * single "rr" output. */
+	if (a && *a && (*a)->next)
+	{
+		t_node *first = *a;
+		t_node *last = *a;
+		while (last->next)
+			last = last->next;
+		*a = first->next;
+		first->next = NULL;
+		last->next = first;
+	}
+	if (b && *b && (*b)->next)
+	{
+		t_node *first = *b;
+		t_node *last = *b;
+		while (last->next)
+			last = last->next;
+		*b = first->next;
+		first->next = NULL;
+		last->next = first;
+	}
 	write_op("rr");
 }

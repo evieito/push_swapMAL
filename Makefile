@@ -25,6 +25,10 @@ SRC = main.c \
 	  small_sort.c \
 	radix_sort.c \
 	chunk_sort.c \
+  	chunk_utils1.c \
+  	chunk_utils2.c \
+  	chunk_utils3.c \
+  	chunk_reinsert.c \
 	  operations_swap.c \
 	  operations_push.c \
 	  operations_rotate.c \

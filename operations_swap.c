@@ -45,7 +45,19 @@ void	sb(t_node **b)
 
 void	ss(t_node **a, t_node **b)
 {
-	sa(a);
-	sb(b);
+	/* perform swaps without calling sa/sb to avoid duplicate output
+	 * (sa/sb already write their own op). */
+	if (a && *a && (*a)->next)
+	{
+		int tmp = (*a)->value;
+		(*a)->value = (*a)->next->value;
+		(*a)->next->value = tmp;
+	}
+	if (b && *b && (*b)->next)
+	{
+		int tmp = (*b)->value;
+		(*b)->value = (*b)->next->value;
+		(*b)->next->value = tmp;
+	}
 	write_op("ss");
 }
