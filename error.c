@@ -1,18 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: evieito- <evieito-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/23 15:39:43 by evieito-          #+#    #+#             */
-/*   Updated: 2025/11/23 16:33:39 by evieito-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <errno.h>
 
 void	print_error(void)
 {
@@ -46,6 +35,7 @@ long	ft_atol_error(const char *s)
 	long	res;
 	int		i;
 
+	errno = 0;
 	sign = 1;
 	res = 0;
 	i = 0;
@@ -59,9 +49,15 @@ long	ft_atol_error(const char *s)
 	{
 		res = res * 10 + (s[i] - '0');
 		if (sign == 1 && res > INT_MAX)
-			print_error();
-		if (sign == -1 && (-res) < INT_MIN)
-			print_error();
+		{
+			errno = ERANGE;
+			return (0);
+		}
+		if (sign == -1 && -res < INT_MIN)
+		{
+			errno = ERANGE;
+			return (0);
+		}
 		i++;
 	}
 	return (res * sign);
@@ -69,10 +65,8 @@ long	ft_atol_error(const char *s)
 
 int	has_duplicates(char **tokens)
 {
-	int		i;
-	int		j;
-	long	a;
-	long	b;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (tokens[i])
@@ -80,9 +74,12 @@ int	has_duplicates(char **tokens)
 		j = i + 1;
 		while (tokens[j])
 		{
-			a = ft_atol_error(tokens[i]);
-			b = ft_atol_error(tokens[j]);
-			if (a == b)
+			errno = 0;
+			if (ft_atol_error(tokens[i]), errno == ERANGE)
+				return (-1);
+			if (ft_atol_error(tokens[j]), errno == ERANGE)
+				return (-1);
+			if (ft_atol_error(tokens[i]) == ft_atol_error(tokens[j]))
 				return (1);
 			j++;
 		}

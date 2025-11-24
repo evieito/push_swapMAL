@@ -1,18 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   radix_sort.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: evieito- <evieito-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/23 15:43:37 by evieito-          #+#    #+#             */
-/*   Updated: 2025/11/23 18:36:42 by evieito-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
-void	assign_indices(t_node *a)
+#include <stdlib.h>
+
+static void	assign_indices(t_node *a)
 {
 	t_node	*i;
 	t_node	*j;
@@ -34,48 +24,38 @@ void	assign_indices(t_node *a)
 	}
 }
 
-void	radix_pass(t_node **a, t_node **b, int bit, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		if (((*a)->index >> bit) & 1)
-			ra(a);
-		else
-			pb(a, b);
-		i++;
-	}
-	while (*b)
-		pa(a, b);
-}
+/* moved helpers to radix_utils.c */
 
 void	radix_sort(t_node **a, t_node **b)
 {
-	int		size;
-	int		max;
-	int		max_bits;
-	int		bit;
-	t_node	*tmp;
+	int	size;
+	int	chunk_count;
+	int	chunk_size;
+    
 
 	size = stack_size(*a);
-	max = 0;
-	max_bits = 0;
-	tmp = *a;
 	assign_indices(*a);
-	while (tmp)
+	if (size > 100)
 	{
-		if (tmp->index > max)
-			max = tmp->index;
-		tmp = tmp->next;
+		best_move_sort(a, b);
+		return ;
 	}
-	while ((max >> max_bits) != 0)
-		max_bits++;
-	bit = 0;
-	while (bit < max_bits)
 	{
-		radix_pass(a, b, bit, size);
-		bit++;
+		int	target;
+
+		if (size <= 100)
+			target = 20;
+		else if (size <= 500)
+			target = 20;
+		else
+			target = 40;
+		chunk_count = size / target;
+		if (chunk_count == 0)
+			chunk_count = 1;
 	}
+	chunk_size = size / chunk_count;
+	if (chunk_size == 0)
+		chunk_size = 1;
+	push_chunks_to_b(a, b, chunk_size, size);
+	rebuild_a_from_b(a, b);
 }
